@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 
 /**
@@ -108,6 +109,94 @@ public class CatsService {
     }catch(IOException e){
       System.out.println(e);
     }
+
+  }
+
+  public static void viewFavourites(String apiKey) throws IOException {
+
+    OkHttpClient client = new OkHttpClient();
+
+    Request request = new Request.Builder()
+        .url("https://api.thecatapi.com/v1/favourites")
+        .get()
+        .addHeader("Content-Type", "application/json")
+        .addHeader("x-api-key", apiKey)
+        .build();
+
+    Response response = client.newCall(request).execute();
+
+    // Save String with response
+    String eJson = response.body().string();
+
+    // Create the object Gson
+    Gson gson = new Gson();
+
+    CatsFav[] catsArray = gson.fromJson(eJson, CatsFav[].class);
+
+    // validates Favourites
+    if(catsArray.length > 0){
+      int min = 1;
+      int max = catsArray.length;
+      int random = (int) (Math.random() * ((max - min) + 1)) + min;
+      int indice = random - 1;
+
+      CatsFav catFav = catsArray[indice];
+
+      // Scale image
+      Image image = null;
+      try{
+
+        URL url = new URL(catFav.image.getUrl());
+        image = ImageIO.read(url);
+
+        ImageIcon fontCat = new ImageIcon(image);
+
+        if(fontCat.getIconWidth() > 800){
+          // Scale
+          Image font = fontCat.getImage();
+          Image changed = font.getScaledInstance(800, 600, java.awt.Image.SCALE_SMOOTH);
+          fontCat = new ImageIcon(changed);
+        }
+
+        // Create menu for app
+        String menu = "Options:\n"
+            + "1. View New Image\n"
+            + "2. Delete Favourite\n"
+            + "3. return\n";
+
+        String[] botones = {"See another image","Delete Favourite", "return"};
+        String id_cat = catFav.getId();
+        String option = (String) JOptionPane.showInputDialog(null,menu,id_cat, JOptionPane.INFORMATION_MESSAGE, fontCat, botones,botones[0]);
+
+        int selected = -1;
+
+        // validate option of user
+        for(int i = 0;i < botones.length; i++){
+          if(option.equals(botones[i])){
+            selected = i;
+          }
+        }
+
+        switch(selected){
+          case 0:
+            viewFavourites(apiKey);
+            break;
+          case 1:
+            deleteFavourite(catFav);
+            break;
+          default:
+            break;
+        }
+
+      }catch(IOException e){
+        System.out.println(e);
+      }
+
+    }
+
+  }
+
+  private static void deleteFavourite(CatsFav catFav) {
 
   }
 

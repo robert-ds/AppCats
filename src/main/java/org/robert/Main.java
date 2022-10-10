@@ -16,7 +16,7 @@ public class Main {
 
     int opt = -1;
     String[] botones = {
-        "1. View Cats","2. Exit"
+        "1. View Cats","2. View Favourites","3. Exit"
     };
 
     do{
@@ -33,6 +33,11 @@ public class Main {
       switch(opt){
         case 0:
           CatsService.viewCats();
+          break;
+
+        case 1:
+          Cats cat = new Cats();
+          CatsService.viewFavourites(cat.getApikey());
           break;
 
         default:
