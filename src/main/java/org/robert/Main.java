@@ -1,6 +1,7 @@
 package org.robert;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA
@@ -11,7 +12,7 @@ import javax.swing.*;
 
 public class Main {
 
-  public static void main(String[] args){
+  public static void main(String[] args) throws IOException {
 
     int opt = -1;
     String[] botones = {

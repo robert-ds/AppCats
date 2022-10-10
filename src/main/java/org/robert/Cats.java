@@ -9,18 +9,18 @@ package org.robert;
 
 public class Cats {
 
-  int id;
+  String id;
   String url;
   String apikey = "live_0vvEexCIZoQNDvTpVFC26CV2JhF0X1CQ8iN3LDkBRdH2ymKUcKiHrY9s6F9YwIhf";
   String image;
 
   // Getters and Setters
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 
