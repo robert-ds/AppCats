@@ -35,9 +35,6 @@ public class Main {
           CatsService.viewCats();
           break;
 
-        case 1:
-          break;
-
         default:
           break;
       }

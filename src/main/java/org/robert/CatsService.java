@@ -1,16 +1,12 @@
 package org.robert;
 
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.squareup.okhttp.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
@@ -97,6 +93,21 @@ public class CatsService {
   }
 
   public static void FavouriteCat(Cats cat){
+
+    try{
+      OkHttpClient client = new OkHttpClient();
+      MediaType mediaType = MediaType.parse("application/json");
+      RequestBody body = RequestBody.create(mediaType, "{\n\t\"image_id\":\""+ cat.getId() +"\"\n}");
+      Request request = new Request.Builder()
+          .url("https://api.thecatapi.com/v1/favourites")
+          .post(body)
+          .addHeader("Content-Type", "application/json")
+          .addHeader("x-api-key", cat.getApikey())
+          .build();
+      Response response = client.newCall(request).execute();
+    }catch(IOException e){
+      System.out.println(e);
+    }
 
   }
 
